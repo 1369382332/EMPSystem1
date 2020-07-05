@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 使用注解时，namespace值绝对不可以和 映射接口全包名一致，会出现冲突 -->
+<mapper namespace="com.briup.ssm.dao.OrdersDao">
+    <resultMap type="Orders" id="OrdersBasicResultMap">
+    <id column="rid" property="id"></id>
+    <result column="orderNum" property="orderNum"/>
+    <result column="orderTime" property="orderTime"/>
+    <result column="peopleCount" property="peopleCount"/>
+    <result column="orderDesc" property="orderDesc"/>
+    <result column="payType" property="payType"/>
+    <result column="orderStatus" property="orderStatus"/>
+  </resultMap>
+
+  <resultMap type="Orders" id="OrdersResultMapWithProduct" extends="OrdersBasicResultMap">
+    <!-- 一对一映射 -->
+    <association property="product" resultMap="com.briup.ssm.dao.IProductDao.ProductBasicResultMap"></association>
+  </resultMap>
+    <resultMap id="ordersid" type="Orders" extends="OrdersBasicResultMap">
+    <association property="product" select="com.briup.ssm.dao.IProductDao.findProductById" column="productid"></association>
+    <association property="member" select="com.briup.ssm.dao.MemberMapper.selectByPrimaryKey" column="memberid"></association>
+    <collection property="travellers" select="com.briup.ssm.dao.TravellerMapper.selectByPrimaryKey" column="id"></collection>
+    </resultMap>
+	 <select id="findAllOrders" resultMap="OrdersResultMapWithProduct">
+    <!-- 嵌套结果映射 -->
+    select r.id rid,r.orderNum,r.orderTime,r.peopleCount,r.orderDesc,r.payType,r.orderStatus,
+      p.id,p.productNum,p.productName,p.cityName,p.departureTime,p.productPrice,
+      p.productDesc,p.productStatus
+    from orders r,product p
+    where r.productId = p.id(+)
+  </select>
+  <select id="findOrderById" resultMap="ordersid">
+    select * from orders
+    where id=#{id}
+</select>
+
+
+
+</mapper>

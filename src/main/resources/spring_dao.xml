@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context" 
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context.xsd
+           http://www.springframework.org/schema/aop
+           http://www.springframework.org/schema/aop/spring-aop.xsd">
+	
+	<!-- 引入本地数据库配置文件 -->
+	<context:property-placeholder location="classpath:jdbc.properties"/>
+	
+	<!-- 添加c3p0数据源 -->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="driverClass" value="${jdbc.driver}" />
+        <property name="jdbcUrl" value="${jdbc.url}" />
+        <property name="user" value="${jdbc.username}" />
+        <property name="password" value="${jdbc.password}" />
+    </bean>
+	
+	<!-- 配置sqlsessionFactory -->
+	<!-- 查看源码便可知注入的property的名字 -->
+	<!-- 可以读取mybatis-config.xml文件,也可以不读取,信息全都在配置在spring中 -->
+	<!-- <property name="configLocation" value="classpath:mybatis-config.xml" /> -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="plugins">
+			<array>
+				<!-- 传入插件的对象 -->
+				<bean class="com.github.pagehelper.PageInterceptor">
+					<property name="properties">
+						<props>
+							<prop key="helperDialect">oracle</prop>
+							<prop key="reasonable">true</prop>
+						</props>
+					</property>
+				</bean>
+			</array>
+		</property>
+		<property name="dataSource" ref="dataSource" />
+		<property name="typeAliasesPackage" value="com.briup.ssm.domain"></property>
+		<property name="configurationProperties">
+            <props>
+                <prop key="cacheEnabled">true</prop> 
+                <prop key="lazyLoadingEnabled">false</prop> 
+            </props>
+        </property>
+		<property name="mapperLocations" value="classpath:mapperxml/*.xml"></property>
+	</bean>
+	
+	<!-- 
+		 扫描mapper接口所在的包名，当有多个包的时候，用半角逗号分隔即可,也可以使用*通配符
+		 注意:这里不注入sqlSessionFactory也是可以的
+    -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.briup.ssm.dao"></property>
+	</bean>
+	
+</beans>

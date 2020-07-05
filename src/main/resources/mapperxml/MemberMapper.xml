@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.briup.ssm.dao.MemberMapper">
+  <resultMap id="BaseResultMap" type="com.briup.ssm.domain.Member">
+    <!--@mbg.generated-->
+    <!--@Table "MEMBER"-->
+    <id column="ID" property="id" />
+    <result column="NAME" property="name" />
+    <result column="NICKNAME" property="nickname" />
+    <result column="PHONENUM" property="phoneNum" />
+    <result column="EMAIL" property="email" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    ID, "NAME", NICKNAME, PHONENUM, EMAIL
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from "MEMBER"
+    where ID = #{id}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    <!--@mbg.generated-->
+    delete from "MEMBER"
+    where ID = #{id}
+  </delete>
+  <insert id="insert" parameterType="com.briup.ssm.domain.Member">
+    <!--@mbg.generated-->
+    insert into "MEMBER" (ID, "NAME", NICKNAME, PHONENUM, EMAIL)
+    values (#{id}, #{name}, #{nickname}, #{phoneNum}, #{email})
+  </insert>
+  <insert id="insertSelective" parameterType="com.briup.ssm.domain.Member">
+    <!--@mbg.generated-->
+    insert into "MEMBER"
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="name != null">
+        "NAME",
+      </if>
+      <if test="nickname != null">
+        NICKNAME,
+      </if>
+      <if test="phoneNum != null">
+        PHONENUM,
+      </if>
+      <if test="email != null">
+        EMAIL,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id},
+      </if>
+      <if test="name != null">
+        #{name},
+      </if>
+      <if test="nickname != null">
+        #{nickname},
+      </if>
+      <if test="phoneNum != null">
+        #{phoneNum},
+      </if>
+      <if test="email != null">
+        #{email},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.briup.ssm.domain.Member">
+    <!--@mbg.generated-->
+    update "MEMBER"
+    <set>
+      <if test="name != null">
+        "NAME" = #{name},
+      </if>
+      <if test="nickname != null">
+        NICKNAME = #{nickname},
+      </if>
+      <if test="phoneNum != null">
+        PHONENUM = #{phoneNum},
+      </if>
+      <if test="email != null">
+        EMAIL = #{email},
+      </if>
+    </set>
+    where ID = #{id}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.briup.ssm.domain.Member">
+    <!--@mbg.generated-->
+    update "MEMBER"
+    set "NAME" = #{name},
+      NICKNAME = #{nickname},
+      PHONENUM = #{phoneNum},
+      EMAIL = #{email}
+    where ID = #{id}
+  </update>
+</mapper>

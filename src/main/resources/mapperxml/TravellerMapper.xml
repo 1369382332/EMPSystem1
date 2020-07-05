@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.briup.ssm.dao.TravellerMapper">
+  <resultMap id="BaseResultMap" type="com.briup.ssm.domain.Traveller">
+    <!--@mbg.generated-->
+    <!--@Table TRAVELLER-->
+    <id column="ID" property="id" />
+    <result column="NAME" property="name" />
+    <result column="SEX" property="sex" />
+    <result column="PHONENUM" property="phoneNum" />
+    <result column="CREDENTIALSTYPE" property="credentialsType" />
+    <result column="CREDENTIALSNUM" property="credentialsNum" />
+    <result column="TRAVELLERTYPE" property="travellerType" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    ID, "NAME", SEX, PHONENUM, CREDENTIALSTYPE, CREDENTIALSNUM, TRAVELLERTYPE
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from TRAVELLER
+    where ID = (select travellerid
+    from order_traveller
+    where orderid=#{id})
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    <!--@mbg.generated-->
+    delete from TRAVELLER
+    where ID = #{id}
+  </delete>
+  <insert id="insert" parameterType="com.briup.ssm.domain.Traveller">
+    <!--@mbg.generated-->
+    insert into TRAVELLER (ID, "NAME", SEX, PHONENUM, CREDENTIALSTYPE, CREDENTIALSNUM, 
+      TRAVELLERTYPE)
+    values (#{id}, #{name}, #{sex}, #{phoneNum}, #{credentialsType}, #{credentialsNum},
+      #{travellerType})
+  </insert>
+  <insert id="insertSelective" parameterType="com.briup.ssm.domain.Traveller">
+    <!--@mbg.generated-->
+    insert into TRAVELLER
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="name != null">
+        "NAME",
+      </if>
+      <if test="sex != null">
+        SEX,
+      </if>
+      <if test="phoneNum != null">
+        PHONENUM,
+      </if>
+      <if test="credentialsType != null">
+        CREDENTIALSTYPE,
+      </if>
+      <if test="credentialsNum != null">
+        CREDENTIALSNUM,
+      </if>
+      <if test="travellerType != null">
+        TRAVELLERTYPE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id},
+      </if>
+      <if test="name != null">
+        #{name},
+      </if>
+      <if test="sex != null">
+        #{sex},
+      </if>
+      <if test="phoneNum != null">
+        #{phoneNum},
+      </if>
+      <if test="credentialsType != null">
+        #{credentialsType},
+      </if>
+      <if test="credentialsNum != null">
+        #{credentialsNum},
+      </if>
+      <if test="travellerType != null">
+        #{travellerType},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.briup.ssm.domain.Traveller">
+    <!--@mbg.generated-->
+    update TRAVELLER
+    <set>
+      <if test="name != null">
+        "NAME" = #{name},
+      </if>
+      <if test="sex != null">
+        SEX = #{sex},
+      </if>
+      <if test="phoneNum != null">
+        PHONENUM = #{phoneNum},
+      </if>
+      <if test="credentialsType != null">
+        CREDENTIALSTYPE = #{credentialsType},
+      </if>
+      <if test="credentialsNum != null">
+        CREDENTIALSNUM = #{credentialsNum},
+      </if>
+      <if test="travellerType != null">
+        TRAVELLERTYPE = #{travellerType},
+      </if>
+    </set>
+    where ID = #{id}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.briup.ssm.domain.Traveller">
+    <!--@mbg.generated-->
+    update TRAVELLER
+    set "NAME" = #{name},
+      SEX = #{sex},
+      PHONENUM = #{phoneNum},
+      CREDENTIALSTYPE = #{credentialsType},
+      CREDENTIALSNUM = #{credentialsNum},
+      TRAVELLERTYPE = #{travellerType}
+    where ID = #{id}
+  </update>
+</mapper>

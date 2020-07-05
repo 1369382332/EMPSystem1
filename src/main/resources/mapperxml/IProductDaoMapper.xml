@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 使用注解时，namespace值绝对不可以和 映射接口全包名一致，会出现冲突 -->
+<mapper namespace="com.briup.ssm.dao.IProductDao">
+	<resultMap type="Product" id="ProductBasicResultMap">
+    <id column="id" property="id"></id>
+    <result column="productNum" property="productNum"/>
+    <result column="productName" property="productName"/>
+    <result column="cityName" property="cityName"/>
+    <result column="departureTime" property="departureTime"/>
+    <result column="productPrice" property="productPrice"/>
+    <result column="productDesc" property="productDesc"/>
+    <result column="productStatus" property="productStatus"/>
+  </resultMap>
+	<select id="findAllProducts" resultType="com.briup.ssm.domain.Product">
+		select * from product
+	</select>
+	<insert id="saveProduct" parameterType="Product">
+	insert into product(productNum,productName,cityName,departureTime,productPrice,productDesc,productStatus)
+	values (#{productNum},#{productName},#{cityName},#{departureTime},#{productPrice},#{productDesc},#{productStatus})
+	</insert>
+
+    <select id="findProductById" parameterType="String" resultType="Product">
+    select *
+    from product
+    where id=#{id}
+    </select>
+
+
+</mapper>
